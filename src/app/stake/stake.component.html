@@ -88,13 +88,13 @@
                     </div>
                 </div>
             </a>
-            <div style="cursor: pointer;background-color: white;border-radius: 30px 30px 0px 0px" class="stake1" (click)="stakeTabClicked()">
+            <div style="cursor: pointer;background-color: white;border-radius: 30px 30px 0px 0px" class="stake1" (click)="stakeTabClicked()" [ngClass]="{'isActiveBtn':!stakeActive}">
                 <div class="stake2">
                     Stake
                 </div>
             </div>
-            <div class="unstake" style="cursor: pointer;background-color:white;top:220px;left:380px;border-radius: 30px 30px 0px 0px"
-                (click)="unstakeTabClicked()">
+            <div class="unstake" style="cursor: pointer;background-color:white;top:220px;left:380px;border-radius: 30px 30px 0px 0px" 
+                (click)="unstakeTabClicked()" [ngClass]="{'isActiveBtn':stakeActive}">
                 <div class="unstake1">
                     Unstake
                 </div>
@@ -118,18 +118,21 @@
                 <div class="_isstakeActive">
                     <table>
                         <tr>
-                            <td>Stake Id</td>
-                            <td>Term type</td>
-                            <td>Ammount</td>
-                            <td>&nbsp;</td>
+                            <td>Stake Id : 12904812094</td>
+                            <td>Term type : Weekly</td>
                         </tr>
-                        <tr *ngFor="let a of [1,2,3]">
-                            <td>12889</td>
-                            <td>Weekly</td>
-                            <td>36726328789</td>
-                            <td><button pButton type="button" label="Withdraw" (click)="withdraw()"></button></td>
+                        <tr>
+                            <td>Staked : 21782781 EDNA</td>
+                            <td>Reward on : 10/04/2018</td>
                         </tr>
+                        <!-- <p class="tc">Next Reward</p> -->
                     </table>
+                    <p class="tc nclr" style="padding-top: 15px;">Next Reward</p>
+                    <h2 class="tc">123467899 EDNA</h2>
+                    <p class="nclr" style="padding: 20px 30px;line-height: 20px;">There are no minimums or maximum stakes and you can withdraw at any time. You will be warned by the software if you will loose rewards when withdrawing early.</p>
+                    <div class="tc">
+                        <button pButton type="button" label="Withdraw" class="wi52X"></button>
+                    </div>
                 </div>
             </div>
             <div class="youhave538992889">

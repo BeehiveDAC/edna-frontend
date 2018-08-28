@@ -120,6 +120,8 @@ div {
   -ms-transform       : rotate(0deg); /* IE 9 */
   -webkit-transform   : rotate(0deg); /* Chrome, Safari, Opera */
   transform           : rotate(0deg);
+  transition          :0.3s ease-in-out;
+  -webkit-transition  :0.3s ease-in-out; 
 }
 .stake .stake1 .rectangle4 {
   background-color    : rgba(255,255,255,0.0);
@@ -521,30 +523,44 @@ div {
 ._stackerTrick select option{
 }
 ._isstakeActive{
-  width: 650px;
+  width: 700px;
   min-height: 50px;
-  max-height: 350px;
+  max-height: 450px;
   background: #fff;
   border-radius: 4px;
   overflow: auto;
-  padding-bottom: 100px;
+  padding: 50px 0;
   z-index: 5;
   border: 1px solid #d8d4d4;
 }
 ._isstakeActive table{
   width: 100%;
-  text-align: center;
+}
+._isstakeActive table tr{
 }
 ._isstakeActive table tr td{
   float: left;
-  width: 25%;
+  width: 50%;
   padding: 15px 0;
+  padding: 10px 50px;
   color: #a0a0a0;
 }
-._isstakeActive table tr:first-child td{
+.tc{
+  text-align: center;
+}
+.nclr{
+  color: #a0a0a0;
+}
+.wi52X{
+  padding: 5px 50px;
+  letter-spacing: 2px;
+  background-color: rgba(33, 117, 255, 1.0);
+  color: #ffffff;
+}
+/* ._isstakeActive table tr:first-child td{
   border-right: 1px solid #d8d4d4;
   border-bottom: 1px solid #d8d4d4;
 }
 ._isstakeActive table tr:first-child td:last-child{
   border-right: 1px solid transparent;
-}
+} */
