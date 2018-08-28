@@ -1,0 +1,131 @@
+<!-- <div class="stake">
+  <div style="width: 1024px; height: 100%; position:relative; margin:auto;">
+      <div class="rectangle">
+      </div>
+      <img src="assets/img/withdrwaw-bitmap.png" class="bitmap">
+      <div class="youhave538992889">
+          You have [5389928.89] EDNA
+      </div>
+      <a href="withdrwaw.html">
+          <div class="unstake">
+              <img src="assets/img/withdrwaw-rectangle-4@2x.png" class="rectangle4" />
+              <div class="unstake1">
+                  Un Stake
+              </div>
+          </div>
+      </a>
+      <div
+        style="cursor: pointer"
+        class="stake1"
+        (click)="stakeTabClicked()">
+          <img src="assets/img/withdrwaw-rectangle-4@2x.png" class="rectangle4" />
+          <div class="stake2">
+              Stake
+          </div>
+      </div>
+      <div class="group">
+          <img src="assets/img/stake-rectangle-2.png" class="rectangle2" />
+          <div class="stakenow">
+              <img src="assets/img/stake-rectangle-3@2x.png" class="rectangle3" />
+              <div class="stake2">
+                  STAKE
+              </div>
+          </div>
+          <div class="amounttoinvest">
+              Amount to invest
+          </div>
+          <div class="e61d">
+              <img src="assets/img/stake-shape@2x.png" class="shape" />
+          </div>
+          <img src="assets/img/stake-line@2x.png" class="line" />
+          <div class="weekly">
+              Weekly
+          </div>
+      </div>
+      <div class="yourchoiceof3te">
+          Your choice of 3 "terms lengths" are offered: Weekly, Monthly or Quarterly.
+          <br/>
+          <br/>
+          Monthly is rewarded at 1.5 times the weekly reward, and quarterly at double the weekly "term".
+          <br/>
+      </div>
+      <img src="assets/img/landing-bitmap 1@2x.png" class="bitmap1" />
+      <div class="rules">
+          Rules
+      </div>
+      <a href="landing.html">
+          <div class="group2">
+              <div class="logout">
+                  Logout
+              </div>
+              <div class="exit2">
+                  <img src="assets/img/withdrwaw-shape@2x.png" class="shape" />
+                  <img src="assets/img/withdrwaw-shape 1@2x.png" class="shape1" />
+                  <img src="assets/img/withdrwaw-shape 2@2x.png" class="shape2" />
+              </div>
+          </div>
+      </a>
+  </div>
+</div> -->
+
+<div class="stake">
+    <div style="width: 1024px; height: 100%; position:relative; margin:auto;">
+        <div class="rectangle">
+            <img src="assets/img/withdrwaw-bitmap.png" class="bitmap">
+            <img src="assets/img/landing-bitmap 1@2x.png" class="bitmap1" />
+            <div class="rules">
+                Rules
+            </div>
+            <a href="landing.html">
+                <div class="group2">
+                    <div class="logout">
+                        {{logingText}}
+                    </div>
+                    <div class="exit2">
+                        <img src="assets/img/withdrwaw-shape@2x.png" class="shape" />
+                        <img src="assets/img/withdrwaw-shape 1@2x.png" class="shape1" />
+                        <img src="assets/img/withdrwaw-shape 2@2x.png" class="shape2" />
+                    </div>
+                </div>
+            </a>
+                <div
+                style="cursor: pointer;background-color: white;border-radius: 30px 30px 0px 0px"
+                class="stake1"
+                (click)="stakeTabClicked()">
+                  <div class="stake2">
+                    Stake
+                  </div>
+              </div>
+                <div class="unstake"
+                style="cursor: pointer;background-color:white;top:220px;left:380px;border-radius: 30px 30px 0px 0px"
+                (click)="unstakeTabClicked()">
+                    <div class="unstake1">
+                        Unstake
+                    </div>
+                </div>
+                <div
+                *ngIf="stakeActive"
+                style="position: absolute;top:285px;left:190px">
+                    <select style="width:200px;height:60px;-webkit-appearance: none;border-radius:0px 0px 0px 0px">
+                      <option *ngFor="let period of periodArray">{{period.name}}</option>
+                    </select>
+                    <input style="width:200px;height:60px;font-size:25px;text-align: center">
+                    <button
+                    style="width:200px;height:60px;background-color:#1b5fcd;border-radius: 0px 30px 30px 0px"
+                    (click)="stake()"
+                    >
+                    Stake
+                    </button>
+                </div>
+                <div
+                *ngIf="!stakeActive"
+                style="position: absolute;top:285px;left:190px"
+                >
+                  unstake
+                </div>
+            <div class="youhave538992889">
+                You have [5389928.89] EDNA
+            </div>
+        </div>
+    </div>
+  </div>
