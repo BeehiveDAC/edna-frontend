@@ -16,7 +16,7 @@ export class StakeComponent implements OnInit {
   periodArray: any;
   logingText = "Login"
   constructor(private scatterService: ScatterService) {
-    this.periodArray = [{name:"weekly",value:0},{name:"monthly",value:1},{name:"yearly",value:2}]
+    this.periodArray = [{label:"weekly",value:0},{label:"monthly",value:1},{label:"yearly",value:2}]
   }
 
   ngOnInit() {

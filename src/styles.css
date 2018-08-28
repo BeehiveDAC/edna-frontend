@@ -20,3 +20,60 @@ body, input[text], button {
 * {
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.stackerPrime{
+  border-radius: 50px;
+  height: 65px;
+  position: relative;
+}
+#_selectaStake .ui-dropdown{
+  width: 200px!important;
+  padding: 13px 0;
+  height: 65px;
+  bottom: 5px;
+  border-right: none;
+  border: none;
+  border-radius: 50px 0 0 50px;
+  border: 1px solid #dcdcdc;
+}
+#_selectaStake .ui-dropdown .ui-dropdown-label{
+  border-radius: 50px 0 0 50px;
+  text-align: center;
+  font-size: 18px;
+}
+#_selectaStake .ui-dropdown .ui-dropdown-item{
+  padding: 0.429em 1.857em;
+  font-size: 18px;
+}
+.stackerPrime .primInput{
+  height: 65px;
+  margin: 0;
+  font-size: 18px;
+  padding-left: 16px;
+  border: none;
+  position: absolute;
+  bottom: 0px;
+  border-top: 1px solid #dcdcdc;
+  border-bottom: 1px solid #dcdcdc;
+  width: 250px;
+  border-radius: 0;
+}
+.stackerPrime .primBtn{
+  height: 65px;
+  padding: 0;
+  width: 200px;
+  font-size: 25px;
+  bottom: 0px;
+  border-radius: 0 50px 50px 0;
+  background-color: #2274fd;
+  text-transform: uppercase;
+  border: none;
+  left: 248px;
+}
+._isstakeActive button{
+  background-color: transparent;
+  color: rgba(33, 117, 255, 1.0);
+  border-color: rgba(33, 117, 255, 1.0);
+  font-size: 16px;
+  padding: 2px 12px;
+}

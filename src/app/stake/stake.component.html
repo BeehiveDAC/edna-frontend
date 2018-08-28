@@ -88,44 +88,53 @@
                     </div>
                 </div>
             </a>
-                <div
-                style="cursor: pointer;background-color: white;border-radius: 30px 30px 0px 0px"
-                class="stake1"
-                (click)="stakeTabClicked()">
-                  <div class="stake2">
+            <div style="cursor: pointer;background-color: white;border-radius: 30px 30px 0px 0px" class="stake1" (click)="stakeTabClicked()">
+                <div class="stake2">
                     Stake
-                  </div>
-              </div>
-                <div class="unstake"
-                style="cursor: pointer;background-color:white;top:220px;left:380px;border-radius: 30px 30px 0px 0px"
-                (click)="unstakeTabClicked()">
-                    <div class="unstake1">
-                        Unstake
-                    </div>
                 </div>
-                <div
-                *ngIf="stakeActive"
-                style="position: absolute;top:285px;left:190px">
-                    <select style="width:200px;height:60px;-webkit-appearance: none;border-radius:0px 0px 0px 0px">
+            </div>
+            <div class="unstake" style="cursor: pointer;background-color:white;top:220px;left:380px;border-radius: 30px 30px 0px 0px"
+                (click)="unstakeTabClicked()">
+                <div class="unstake1">
+                    Unstake
+                </div>
+            </div>
+            <div *ngIf="stakeActive" class="stackerPrime" style="position: absolute;top: 285px;left:160px">
+                <!-- <select style="width:200px;height:60px;-webkit-appearance: none;">
                       <option *ngFor="let period of periodArray">{{period.name}}</option>
-                    </select>
-                    <input style="width:200px;height:60px;font-size:25px;text-align: center">
-                    <button
+                    </select> -->
+                <p-dropdown [options]="periodArray" placeholder="Select a Stake" id="_selectaStake"></p-dropdown>
+                <input type="text" pInputText class="primInput" placeholder="Ammount to invest">
+                <button pButton type="button" label="Stake" (click)="stake()" class="primBtn"></button>
+                <!-- <input style="width:200px;height:60px;font-size:25px;text-align: center"> -->
+                <!-- <button
                     style="width:200px;height:60px;background-color:#1b5fcd;border-radius: 0px 30px 30px 0px"
                     (click)="stake()"
                     >
                     Stake
-                    </button>
+                    </button> -->
+            </div>
+            <div *ngIf="!stakeActive" style="position: absolute;top: 284px;left: 164px;z-index: 2;">
+                <div class="_isstakeActive">
+                    <table>
+                        <tr>
+                            <td>Stake Id</td>
+                            <td>Term type</td>
+                            <td>Ammount</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr *ngFor="let a of [1,2,3]">
+                            <td>12889</td>
+                            <td>Weekly</td>
+                            <td>36726328789</td>
+                            <td><button pButton type="button" label="Withdraw" ></button></td>
+                        </tr>
+                    </table>
                 </div>
-                <div
-                *ngIf="!stakeActive"
-                style="position: absolute;top:285px;left:190px"
-                >
-                  unstake
-                </div>
+            </div>
             <div class="youhave538992889">
                 You have [5389928.89] EDNA
             </div>
         </div>
     </div>
-  </div>
+</div>
