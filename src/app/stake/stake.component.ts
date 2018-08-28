@@ -54,4 +54,7 @@ export class StakeComponent implements OnInit {
       this.logingText = "Logout"
     }
   }
+  withdraw(){
+    console.log("enter--")
+  }
 }
