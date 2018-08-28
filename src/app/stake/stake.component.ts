@@ -1,8 +1,9 @@
+import { EosService } from './../services/eos.service';
 import { ScatterService } from './../services/scatter.service';
 import { Component, OnInit } from '@angular/core';
 import { identity } from 'rxjs';
 import * as Eos from 'eosjs';
-import {EosService} from '../services/eos.service';
+
 
 @Component({
   selector: 'app-stake',
@@ -11,13 +12,16 @@ import {EosService} from '../services/eos.service';
 })
 export class StakeComponent implements OnInit {
   user:any;
+  balance:any;
   scatter:any;
   stakeActive:boolean = true;
   periodArray: any;
   logingText = "Login"
   selectedAmount: string;
   selectedPeriod: number;
-  constructor(private scatterService: ScatterService) {
+  constructor(
+    private scatterService: ScatterService,
+    private eosService:EosService) {
     this.periodArray = [{label:"Weekly",value:0},{label:"Monthly",value:1},{label:"Quarterly",value:2}]
   }
 
@@ -25,6 +29,8 @@ export class StakeComponent implements OnInit {
     (<any>document).addEventListener('scatterLoaded', scatterExtension => {
       this.scatter = (<any>window).scatter;
       if(this.scatter.identity){
+        console.log(this.scatter.identity)
+        this.getBalance("tryednatoken","EDNA",this.scatter.identity.accounts[0].name)
         this.logingText = "Logout"
       }
       console.log("scatter called");
@@ -66,7 +72,7 @@ export class StakeComponent implements OnInit {
 
   }
   login(){
-    if(this.scatterService.isLoggedIn){
+    if(this.scatterService.isLoggedIn()){
       this.scatterService.logout()
       this.logingText = "Login"
     }else{
@@ -93,4 +99,18 @@ export class StakeComponent implements OnInit {
   periodInput(event:any){
     console.log("period input",(this.selectedPeriod+1))
   }
+  getBalance(contract: string, symbol: string, user: string) {
+    this.eosService.eos.getCurrencyBalance({
+      code: contract,
+      symbol: symbol,
+      json: true,
+      account: user
+    }).then((res)=>{
+      if(res.length>0)
+      this.balance = res[0]
+      else
+      this.balance = "0 EDNA"
+    })
+  }
+
 }
