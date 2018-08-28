@@ -15,8 +15,10 @@ export class StakeComponent implements OnInit {
   stakeActive:boolean = true;
   periodArray: any;
   logingText = "Login"
+  selectedAmount: string;
+  selectedPeriod: number;
   constructor(private scatterService: ScatterService) {
-    this.periodArray = [{label:"weekly",value:0},{label:"monthly",value:1},{label:"yearly",value:2}]
+    this.periodArray = [{label:"Weekly",value:0},{label:"Monthly",value:1},{label:"Quarterly",value:2}]
   }
 
   ngOnInit() {
@@ -37,11 +39,29 @@ export class StakeComponent implements OnInit {
     this.stakeActive=false
     console.log("unstake called");
   }
-  stake(){
+  async stake(){
+    console.log("selected period",this.selectedPeriod)
     if(this.scatterService.isLoggedIn()){
-      this.scatterService.transfer()
+      console.log("1");
+      if(!this.selectedAmount){
+        alert("please enter stake amount")
+      }else if(!this.selectedAmount){
+        alert("please choose the stake period")
+      }
+      else{
+        this.scatterService.stake(this.selectedAmount,1)
+      }
     } else{
-      this.scatterService.login()
+      console.log("2")
+      await this.scatterService.login()
+      if(!this.selectedAmount){
+        alert("pease enter stake amount")
+      }else if(!this.selectedAmount){
+        alert("please choose the stake period")
+      }else{
+        this.scatterService.stake(this.selectedAmount,1)
+      }
+
     }
 
   }
@@ -54,7 +74,23 @@ export class StakeComponent implements OnInit {
       this.logingText = "Logout"
     }
   }
-  withdraw(){
-    console.log("enter--")
+  async withdraw(){
+    if(this.scatterService.isLoggedIn()){
+      console.log("1");
+        this.scatterService.stake(this.selectedAmount,1)
+    } else{
+      console.log("2")
+      await this.scatterService.login()
+      this.scatterService.stake(this.selectedAmount,1)
+
+    }
+  }
+  amountInput(value:string){
+    let val = parseInt(value)
+    this.selectedAmount = `${val.toFixed(4)} EDNA`
+    console.log("amount input",val)
+  }
+  periodInput(event:any){
+    console.log("period input",(this.selectedPeriod+1))
   }
 }
