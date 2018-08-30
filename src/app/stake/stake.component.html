@@ -116,17 +116,21 @@
                 <div class="_isstakeActive">
                     <table>
                         <tr>
-                            <td>Stake Id : 12904812094</td>
-                            <td>Term type : Weekly</td>
+                            <td>Stake account : {{Unstake?.stake_account}}</td>
+                            <td>Term type : 
+                                <span *ngIf="Unstake?.stake_period==1">Weekly</span>
+                                <span *ngIf="Unstake?.stake_period==2">Monthly</span>
+                                <span *ngIf="Unstake?.stake_period==3">Quarterly</span>
+                            </td>
                         </tr>
                         <tr>
-                            <td>Staked : 21782781 EDNA</td>
-                            <td>Reward on : 10/04/2018</td>
+                            <td>Staked : {{Unstake?.staked}}</td>
+                            <td>Reward on : {{Unstake?.stake_date | date:'dd/MM/yyy'}}</td>
                         </tr>
                         <!-- <p class="tc">Next Reward</p> -->
                     </table>
                     <p class="tc nclr" style="padding-top: 15px;">Next Reward</p>
-                    <h2 class="tc">123467899 EDNA</h2>
+                    <h2 class="tc" style="font-size: 16px;">Greg Simpson: you have {{Unstake?.escrow}} EDNA's in escrow, if you unstake now you will forefit them</h2>
                     <p class="nclr" style="padding: 20px 30px;line-height: 20px;">There are no minimums or maximum stakes and you can withdraw at any time. You will be warned by the software if you will loose rewards when withdrawing early.</p>
                     <div class="tc">
                         <button pButton type="button" label="Withdraw" class="wi52X" (click)="withdraw()"></button>

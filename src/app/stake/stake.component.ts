@@ -3,6 +3,7 @@ import { ScatterService } from './../services/scatter.service';
 import { Component, OnInit } from '@angular/core';
 import { identity } from 'rxjs';
 import * as Eos from 'eosjs';
+import { ValueTransformer } from '@angular/compiler/src/util';
 
 
 @Component({
@@ -11,6 +12,7 @@ import * as Eos from 'eosjs';
   styleUrls: ['./stake.component.css']
 })
 export class StakeComponent implements OnInit {
+  limit:number=50;
   user:any;
   balance:any;
   scatter:any;
@@ -19,6 +21,8 @@ export class StakeComponent implements OnInit {
   logingText = "Login"
   selectedAmount: string;
   selectedPeriod: number;
+  date:Date=new Date();
+  Unstake:any;
   constructor(
     private scatterService: ScatterService,
     private eosService:EosService) {
@@ -29,9 +33,10 @@ export class StakeComponent implements OnInit {
     (<any>document).addEventListener('scatterLoaded', scatterExtension => {
       this.scatter = (<any>window).scatter;
       if(this.scatter.identity){
-        console.log(this.scatter.identity)
+        console.log(this.scatter.identity,"-------------")
         this.getBalance("tryednatoken","EDNA",this.scatter.identity.accounts[0].name)
         this.logingText = "Logout"
+        this.getUserInfo('tryednatoken','stakes');
       }
       console.log("scatter called");
     })
@@ -111,6 +116,37 @@ export class StakeComponent implements OnInit {
       else
       this.balance = "0 EDNA"
     })
+  }
+
+  getUserInfo(contract,table){
+    this.eosService.eos.getTableRows({
+      scope: contract,
+      code: contract,
+      table:table,
+      json: true,
+      limit:this.limit
+    }).then((res)=>{
+      console.log(res.rows,"--current")
+      let userInfo=this.findUserDetails(res.rows);
+      if(userInfo.length>0){
+        let d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+        d.setUTCSeconds(userInfo[0].stake_date);
+        userInfo[0].stake_date=d;
+        this.Unstake=userInfo[0];
+        console.log(userInfo[0],"[][][][]")
+      }else{
+        this.limit+=50;
+        this.getUserInfo('tryednatoken','stakes');
+      }
+    },(error)=>{
+      console.log(error)
+    })
+  }
+
+  findUserDetails(data){
+    return data.filter(value => {
+     return value.stake_account==this.scatter.identity.accounts[0].name;
+    });
   }
 
 }

@@ -7,6 +7,6 @@ export class EosService {
   public eos: any;
 
   constructor() {
-    this.eos = Eos({httpEndpoint: "http://193.93.219.219:8888"});
+    this.eos = Eos({httpEndpoint: "https://jungle.eosio.cr:443"});
   }
 }
