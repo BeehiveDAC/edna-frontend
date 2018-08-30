@@ -117,7 +117,7 @@
                     <table>
                         <tr>
                             <td>Stake account : {{Unstake?.stake_account}}</td>
-                            <td>Term type : 
+                            <td>Term type :
                                 <span *ngIf="Unstake?.stake_period==1">Weekly</span>
                                 <span *ngIf="Unstake?.stake_period==2">Monthly</span>
                                 <span *ngIf="Unstake?.stake_period==3">Quarterly</span>
@@ -130,7 +130,7 @@
                         <!-- <p class="tc">Next Reward</p> -->
                     </table>
                     <p class="tc nclr" style="padding-top: 15px;">Next Reward</p>
-                    <h2 class="tc" style="font-size: 16px;">Greg Simpson: you have {{Unstake?.escrow}} EDNA's in escrow, if you unstake now you will forefit them</h2>
+                    <h2 class="tc" style="font-size: 16px;">you have {{Unstake?.escrow}} EDNA's in escrow, if you unstake now you will forefit them</h2>
                     <p class="nclr" style="padding: 20px 30px;line-height: 20px;">There are no minimums or maximum stakes and you can withdraw at any time. You will be warned by the software if you will loose rewards when withdrawing early.</p>
                     <div class="tc">
                         <button pButton type="button" label="Withdraw" class="wi52X" (click)="withdraw()"></button>
