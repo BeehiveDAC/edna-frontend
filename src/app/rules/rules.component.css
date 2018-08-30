@@ -1,0 +1,26 @@
+.rulEnLes{
+    position: absolute;
+    top: 120px;
+    /* background-color: orange; */
+    width: 100%;
+    font-family: "SFProText-Regular", Helvetica, Arial, serif;
+    color: rgba(74, 73, 74, 1.0);
+    line-height: 22px;
+}
+
+.rulEnLes li{
+    list-style-type: decimal;
+}
+
+.chk{
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    background-color: orange;
+    z-index: 10;
+    line-height: 40px;
+    text-align: center;
+}

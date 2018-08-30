@@ -14,12 +14,14 @@ import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import { RulesComponent } from './rules/rules.component';
 @NgModule({
   declarations: [
     AppComponent,
     ChildComponent,
     StakeComponent,
-    HomeComponent
+    HomeComponent,
+    RulesComponent
   ],
   imports: [
     BrowserModule,
