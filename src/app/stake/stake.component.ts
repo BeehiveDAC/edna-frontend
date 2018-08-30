@@ -1,8 +1,9 @@
+import { EosService } from './../services/eos.service';
 import { ScatterService } from './../services/scatter.service';
 import { Component, OnInit } from '@angular/core';
 import { identity } from 'rxjs';
 import * as Eos from 'eosjs';
-import {EosService} from '../services/eos.service';
+
 
 @Component({
   selector: 'app-stake',
@@ -11,18 +12,25 @@ import {EosService} from '../services/eos.service';
 })
 export class StakeComponent implements OnInit {
   user:any;
+  balance:any;
   scatter:any;
   stakeActive:boolean = true;
   periodArray: any;
   logingText = "Login"
-  constructor(private scatterService: ScatterService) {
-    this.periodArray = [{label:"weekly",value:0},{label:"monthly",value:1},{label:"yearly",value:2}]
+  selectedAmount: string;
+  selectedPeriod: number;
+  constructor(
+    private scatterService: ScatterService,
+    private eosService:EosService) {
+    this.periodArray = [{label:"Weekly",value:0},{label:"Monthly",value:1},{label:"Quarterly",value:2}]
   }
 
   ngOnInit() {
     (<any>document).addEventListener('scatterLoaded', scatterExtension => {
       this.scatter = (<any>window).scatter;
       if(this.scatter.identity){
+        console.log(this.scatter.identity)
+        this.getBalance("tryednatoken","EDNA",this.scatter.identity.accounts[0].name)
         this.logingText = "Logout"
       }
       console.log("scatter called");
@@ -37,16 +45,34 @@ export class StakeComponent implements OnInit {
     this.stakeActive=false
     console.log("unstake called");
   }
-  stake(){
+  async stake(){
+    console.log("selected period",this.selectedPeriod)
     if(this.scatterService.isLoggedIn()){
-      this.scatterService.transfer()
+      console.log("1");
+      if(!this.selectedAmount){
+        alert("please enter stake amount")
+      }else if(!this.selectedAmount){
+        alert("please choose the stake period")
+      }
+      else{
+        this.scatterService.stake(this.selectedAmount,1)
+      }
     } else{
-      this.scatterService.login()
+      console.log("2")
+      await this.scatterService.login()
+      if(!this.selectedAmount){
+        alert("pease enter stake amount")
+      }else if(!this.selectedAmount){
+        alert("please choose the stake period")
+      }else{
+        this.scatterService.stake(this.selectedAmount,1)
+      }
+
     }
 
   }
   login(){
-    if(this.scatterService.isLoggedIn){
+    if(this.scatterService.isLoggedIn()){
       this.scatterService.logout()
       this.logingText = "Login"
     }else{
@@ -54,7 +80,37 @@ export class StakeComponent implements OnInit {
       this.logingText = "Logout"
     }
   }
-  withdraw(){
-    console.log("enter--")
+  async withdraw(){
+    if(this.scatterService.isLoggedIn()){
+      console.log("1");
+        this.scatterService.stake(this.selectedAmount,1)
+    } else{
+      console.log("2")
+      await this.scatterService.login()
+      this.scatterService.stake(this.selectedAmount,1)
+
+    }
   }
+  amountInput(value:string){
+    let val = parseInt(value)
+    this.selectedAmount = `${val.toFixed(4)} EDNA`
+    console.log("amount input",val)
+  }
+  periodInput(event:any){
+    console.log("period input",(this.selectedPeriod+1))
+  }
+  getBalance(contract: string, symbol: string, user: string) {
+    this.eosService.eos.getCurrencyBalance({
+      code: contract,
+      symbol: symbol,
+      json: true,
+      account: user
+    }).then((res)=>{
+      if(res.length>0)
+      this.balance = res[0]
+      else
+      this.balance = "0 EDNA"
+    })
+  }
+
 }

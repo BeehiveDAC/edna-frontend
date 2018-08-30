@@ -80,4 +80,17 @@ export class ScatterService {
     const options = {authorization: [`${account.name}@${account.authority}`]};
     return this.eos.contract('eosio.token').then(contract => contract.transfer(account.name,"prasanjitkay","30.0000 EOS","memo", options));
   }
+
+  stake(amount:string,period:number){
+    this.load()
+    const account = this.scatter.identity.accounts.find(acc => acc.blockchain === 'eos');
+    const options = {authorization: [`${account.name}@${account.authority}`]};
+    return this.eos.contract('tryednatoken').then(contract => contract.stake(account.name,period,amount, options));
+  }
+  unstake(){
+    this.load()
+    const account = this.scatter.identity.accounts.find(acc => acc.blockchain === 'eos');
+    const options = {authorization: [`${account.name}@${account.authority}`]};
+    return this.eos.contract('tryednatoken').then(contract => contract.unstake(account.name, options));
+  }
 }
