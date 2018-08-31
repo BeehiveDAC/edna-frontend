@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { identity } from 'rxjs';
 import * as Eos from 'eosjs';
 import { ValueTransformer } from '@angular/compiler/src/util';
-
+import {BigNumber} from 'bignumber.js'
 
 @Component({
   selector: 'app-stake',
@@ -32,15 +32,16 @@ export class StakeComponent implements OnInit {
     this.periodArray = [{label:"Weekly",value:0},{label:"Monthly",value:1},{label:"Quarterly",value:2}]
   }
 
+
    async ngOnInit() {
 
     (<any>document).addEventListener('scatterLoaded',async (scatterExtension) => {
       let result = await this.scatterService.load()
       if(this.scatterService.isLoggedIn()){
           console.log("1=======",this.scatterService.accountName())
-          this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
           this.logingText = "Logout"
-          this.getUserInfo('tryednatoken','stakes',0,0);
+          this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
+          this.getUserInfo('tryednatoken','stakes',this.encode(this.scatterService.accountName()),0);
       }else{
         this.router.navigateByUrl('home');
       }
@@ -49,9 +50,14 @@ export class StakeComponent implements OnInit {
       console.log("1=======",this.scatterService.accountName())
       this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
       this.logingText = "Logout"
-      this.getUserInfo('tryednatoken','stakes',0,0);
+      this.getUserInfo('tryednatoken','stakes',this.encode(this.scatterService.accountName()),0);
   }
   }
+  encode(accountName){
+    let encodedName = new BigNumber(Eos.modules.format.encodeName(accountName, false))
+    return encodedName.toString()
+  }
+
 
   stakeTabClicked() {
     this.stakeActive = true;
@@ -72,7 +78,9 @@ export class StakeComponent implements OnInit {
       }
       else{
         try{
-          this.scatterService.stake(this.selectedAmount,this.selectedPeriod+1)
+          await this.scatterService.stake(this.selectedAmount,this.selectedPeriod+1)
+          this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
+          this.getUserInfo('tryednatoken','stakes',this.encode(this.scatterService.accountName()),0);
         }catch(err){
           console.log("inside alert")
           alert(err.error.what)
@@ -106,11 +114,13 @@ export class StakeComponent implements OnInit {
   async withdraw(){
     if(this.scatterService.isLoggedIn()){
       console.log("1");
-        this.scatterService.stake(this.selectedAmount,1)
+        await this.scatterService.unstake()
+        this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
+          this.getUserInfo('tryednatoken','stakes',this.encode(this.scatterService.accountName()),0);
     } else{
       console.log("2")
-      await this.scatterService.login()
-      this.scatterService.stake(this.selectedAmount,1)
+      //await this.scatterService.login()
+      await this.scatterService.unstake()
 
     }
   }
@@ -136,14 +146,16 @@ export class StakeComponent implements OnInit {
     })
   }
 
-  getUserInfo(contract,table,upperBound,count){
+  getUserInfo(contract,table,lowerBound,count){
     console.log("called------")
     this.eosService.eos.getTableRows({
       scope: contract,
       code: contract,
       table:table,
+      upper_bound:-1,
+      lower_bound:lowerBound,
       json: true,
-      limit:500
+      limit:1
     }).then((res)=>{
       console.log(res.rows,"--current")
       let userInfo=this.findUserDetails(res.rows);
@@ -156,15 +168,7 @@ export class StakeComponent implements OnInit {
         this.Unstake=userInfo[0];
         console.log(userInfo[0],"[][][][]")
       }else{
-        if(count<=10 && res.rows.more){
-          count = count+1;
-          upperBound = upperBound+50
-          console.log(`${upperBound}----${count}`)
-          this.getUserInfo('tryednatoken','stakes',upperBound,count);
-        } else{
           this.staked = false;
-        }
-
       }
     },(error)=>{
       console.log(error)
