@@ -1,6 +1,7 @@
 import { EosService } from './../services/eos.service';
 import { ScatterService } from './../services/scatter.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { identity } from 'rxjs';
 import * as Eos from 'eosjs';
 import { ValueTransformer } from '@angular/compiler/src/util';
@@ -18,28 +19,38 @@ export class StakeComponent implements OnInit {
   scatter:any;
   stakeActive:boolean = true;
   periodArray: any;
-  logingText = "Login"
+  logingText = "Logout"
   selectedAmount: string;
   selectedPeriod: number;
   date:Date=new Date();
+  staked =false;
   Unstake:any;
   constructor(
     private scatterService: ScatterService,
-    private eosService:EosService) {
+    private eosService:EosService,
+    public router:Router) {
     this.periodArray = [{label:"Weekly",value:0},{label:"Monthly",value:1},{label:"Quarterly",value:2}]
   }
 
-  ngOnInit() {
-    (<any>document).addEventListener('scatterLoaded', scatterExtension => {
-      this.scatter = (<any>window).scatter;
-      if(this.scatter.identity){
-        console.log(this.scatter.identity,"-------------")
-        this.getBalance("tryednatoken","EDNA",this.scatter.identity.accounts[0].name)
-        this.logingText = "Logout"
-        this.getUserInfo('tryednatoken','stakes');
+   async ngOnInit() {
+
+    (<any>document).addEventListener('scatterLoaded',async (scatterExtension) => {
+      let result = await this.scatterService.load()
+      if(this.scatterService.isLoggedIn()){
+          console.log("1=======",this.scatterService.accountName())
+          this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
+          this.logingText = "Logout"
+          this.getUserInfo('tryednatoken','stakes',0,0);
+      }else{
+        this.router.navigateByUrl('home');
       }
-      console.log("scatter called");
     })
+    if(this.scatterService.isLoggedIn()){
+      console.log("1=======",this.scatterService.accountName())
+      this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
+      this.logingText = "Logout"
+      this.getUserInfo('tryednatoken','stakes',0,0);
+  }
   }
 
   stakeTabClicked() {
@@ -60,7 +71,13 @@ export class StakeComponent implements OnInit {
         alert("please choose the stake period")
       }
       else{
-        this.scatterService.stake(this.selectedAmount,1)
+        try{
+          this.scatterService.stake(this.selectedAmount,this.selectedPeriod+1)
+        }catch(err){
+          console.log("inside alert")
+          alert(err.error.what)
+        }
+
       }
     } else{
       console.log("2")
@@ -76,13 +93,14 @@ export class StakeComponent implements OnInit {
     }
 
   }
-  login(){
+  async login(){
+    console.log("check")
+    await this.scatterService.load()
     if(this.scatterService.isLoggedIn()){
+      console.log("1=------")
       this.scatterService.logout()
       this.logingText = "Login"
-    }else{
-      this.scatterService.login()
-      this.logingText = "Logout"
+      this.router.navigateByUrl('home');
     }
   }
   async withdraw(){
@@ -118,25 +136,35 @@ export class StakeComponent implements OnInit {
     })
   }
 
-  getUserInfo(contract,table){
+  getUserInfo(contract,table,upperBound,count){
+    console.log("called------")
     this.eosService.eos.getTableRows({
       scope: contract,
       code: contract,
       table:table,
       json: true,
-      limit:this.limit
+      limit:500
     }).then((res)=>{
       console.log(res.rows,"--current")
       let userInfo=this.findUserDetails(res.rows);
       if(userInfo.length>0){
+        console.log("printing this =============>")
+        this.staked = true;
         let d = new Date(0); // The 0 there is the key, which sets the date to the epoch
-        d.setUTCSeconds(userInfo[0].stake_date);
-        userInfo[0].stake_date=d;
+        d.setUTCSeconds(userInfo[0].stake_due);
+        userInfo[0].stake_due=d;
         this.Unstake=userInfo[0];
         console.log(userInfo[0],"[][][][]")
       }else{
-        this.limit+=50;
-        this.getUserInfo('tryednatoken','stakes');
+        if(count<=10 && res.rows.more){
+          count = count+1;
+          upperBound = upperBound+50
+          console.log(`${upperBound}----${count}`)
+          this.getUserInfo('tryednatoken','stakes',upperBound,count);
+        } else{
+          this.staked = false;
+        }
+
       }
     },(error)=>{
       console.log(error)
@@ -145,7 +173,7 @@ export class StakeComponent implements OnInit {
 
   findUserDetails(data){
     return data.filter(value => {
-     return value.stake_account==this.scatter.identity.accounts[0].name;
+     return value.stake_account==this.scatterService.accountName();
     });
   }
 

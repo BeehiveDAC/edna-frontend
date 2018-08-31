@@ -649,6 +649,14 @@ div {
   background-color: rgba(33, 117, 255, 1.0);
   color: #ffffff;
 }
+#isPageLoader .ui-progress-spinner{
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  top: 0;
+  width: 40px;
+}
 /* ._isstakeActive table tr:first-child td{
   border-right: 1px solid #d8d4d4;
   border-bottom: 1px solid #d8d4d4;

@@ -15,6 +15,8 @@ import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import { RulesComponent } from './rules/rules.component';
+import {GrowlModule} from 'primeng/growl';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +30,7 @@ import { RulesComponent } from './rules/rules.component';
     BrowserAnimationsModule,
     DropdownModule,
     InputTextModule,
+    GrowlModule,
     ButtonModule,
     TableModule,
     FormsModule,

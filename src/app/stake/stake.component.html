@@ -1,73 +1,3 @@
-<!-- <div class="stake">
-  <div style="width: 1024px; height: 100%; position:relative; margin:auto;">
-      <div class="rectangle">
-      </div>
-      <img src="assets/img/withdrwaw-bitmap.png" class="bitmap">
-      <div class="youhave538992889">
-          You have [5389928.89] EDNA
-      </div>
-      <a href="withdrwaw.html">
-          <div class="unstake">
-              <img src="assets/img/withdrwaw-rectangle-4@2x.png" class="rectangle4" />
-              <div class="unstake1">
-                  Un Stake
-              </div>
-          </div>
-      </a>
-      <div
-        style="cursor: pointer"
-        class="stake1"
-        (click)="stakeTabClicked()">
-          <img src="assets/img/withdrwaw-rectangle-4@2x.png" class="rectangle4" />
-          <div class="stake2">
-              Stake
-          </div>
-      </div>
-      <div class="group">
-          <img src="assets/img/stake-rectangle-2.png" class="rectangle2" />
-          <div class="stakenow">
-              <img src="assets/img/stake-rectangle-3@2x.png" class="rectangle3" />
-              <div class="stake2">
-                  STAKE
-              </div>
-          </div>
-          <div class="amounttoinvest">
-              Amount to invest
-          </div>
-          <div class="e61d">
-              <img src="assets/img/stake-shape@2x.png" class="shape" />
-          </div>
-          <img src="assets/img/stake-line@2x.png" class="line" />
-          <div class="weekly">
-              Weekly
-          </div>
-      </div>
-      <div class="yourchoiceof3te">
-          Your choice of 3 "terms lengths" are offered: Weekly, Monthly or Quarterly.
-          <br/>
-          <br/>
-          Monthly is rewarded at 1.5 times the weekly reward, and quarterly at double the weekly "term".
-          <br/>
-      </div>
-      <img src="assets/img/landing-bitmap 1@2x.png" class="bitmap1" />
-      <div class="rules">
-          Rules
-      </div>
-      <a href="landing.html">
-          <div class="group2">
-              <div class="logout">
-                  Logout
-              </div>
-              <div class="exit2">
-                  <img src="assets/img/withdrwaw-shape@2x.png" class="shape" />
-                  <img src="assets/img/withdrwaw-shape 1@2x.png" class="shape1" />
-                  <img src="assets/img/withdrwaw-shape 2@2x.png" class="shape2" />
-              </div>
-          </div>
-      </a>
-  </div>
-</div> -->
-
 <div class="stake">
     <div style="width: 1024px; height: 100%; position:relative; margin:auto;">
         <div class="rectangle">
@@ -114,6 +44,7 @@
             </div>
             <div *ngIf="!stakeActive" style="position: absolute;top: 284px;left: 164px;z-index: 2;">
                 <div class="_isstakeActive">
+                  <div *ngIf="staked">
                     <table>
                         <tr>
                             <td>Stake account : {{Unstake?.stake_account}}</td>
@@ -125,15 +56,20 @@
                         </tr>
                         <tr>
                             <td>Staked : {{Unstake?.staked}}</td>
-                            <td>Reward on : {{Unstake?.stake_date | date:'dd/MM/yyy'}}</td>
+                            <td>Reward on : {{Unstake?.stake_due | date:'dd/MM/yyy'}}</td>
                         </tr>
                         <!-- <p class="tc">Next Reward</p> -->
                     </table>
-                    <p class="tc nclr" style="padding-top: 15px;">Next Reward</p>
-                    <h2 class="tc" style="font-size: 16px;">you have {{Unstake?.escrow}} EDNA's in escrow, if you unstake now you will forefit them</h2>
+                    <p class="tc nclr" style="padding-top: 15px;">Escrow</p>
+                    <h2 class="tc" style="font-size: 16px;">you have {{Unstake?.escrow}}  in escrow, if you unstake now you will forefit them</h2>
                     <p class="nclr" style="padding: 20px 30px;line-height: 20px;">There are no minimums or maximum stakes and you can withdraw at any time. You will be warned by the software if you will loose rewards when withdrawing early.</p>
                     <div class="tc">
                         <button pButton type="button" label="Withdraw" class="wi52X" (click)="withdraw()"></button>
+                    </div>
+                    </div>
+                    <div *ngIf="!staked">
+                      {{staked}}
+                      Get Started With Staking
                     </div>
                 </div>
             </div>

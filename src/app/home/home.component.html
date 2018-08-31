@@ -10,7 +10,7 @@
                 <div class="dearednaholderits">
                     Dear EDNA holder its time to
                 </div>
-                <a routerLink="/stake" >
+                <a (click)="checkScatterWithIdentity()" >
                     <div class="group">
                         <div class="rectangle5">
                         </div>
@@ -44,7 +44,7 @@
                     <br/>
                     <br/>
                 </div>
-                <div class="group1">
+                <div class="group1" (click)="checkScatterWithIdentity()">
                     <div class="rectangle5">
                     </div>
                     <div class="investnow">
@@ -64,3 +64,4 @@
 
         <!-- End of Scripts -->
 
+        <p-growl [(value)]="msgs"></p-growl>

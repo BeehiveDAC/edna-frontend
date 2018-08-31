@@ -85,12 +85,27 @@ export class ScatterService {
     this.load()
     const account = this.scatter.identity.accounts.find(acc => acc.blockchain === 'eos');
     const options = {authorization: [`${account.name}@${account.authority}`]};
-    return this.eos.contract('tryednatoken').then(contract => contract.stake(account.name,period,amount, options));
+    return this.eos.contract('tryednatoken').then((contract) => {
+      try{
+        contract.stake(account.name,period,amount, options)
+      }catch(err){
+        alert(err.error.what)
+      }
+
+    });
   }
   unstake(){
     this.load()
     const account = this.scatter.identity.accounts.find(acc => acc.blockchain === 'eos');
     const options = {authorization: [`${account.name}@${account.authority}`]};
-    return this.eos.contract('tryednatoken').then(contract => contract.unstake(account.name, options));
+    return this.eos.contract('tryednatoken').
+    then((contract) => {
+      try{
+        contract.unstake(account.name, options)
+      }catch(err){
+        alert(err.error.what)
+      }
+
+    });
   }
 }
