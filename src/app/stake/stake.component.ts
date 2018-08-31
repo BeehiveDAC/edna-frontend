@@ -84,7 +84,7 @@ export class StakeComponent implements OnInit {
       await this.scatterService.login()
       if(!this.selectedAmount){
         alert("pease enter stake amount")
-      }else if(!this.selectedAmount){
+      }else if(!this.selectedPeriod){
         alert("please choose the stake period")
       }else{
         this.scatterService.stake(this.selectedAmount,1)
