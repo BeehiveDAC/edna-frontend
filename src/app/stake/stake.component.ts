@@ -18,6 +18,8 @@ export class StakeComponent implements OnInit {
   balance:any;
   scatter:any;
   stakeActive:boolean = true;
+  unstakeActive:boolean = false;
+  claimActive:boolean = false;
   periodArray: any;
   logingText = "Logout"
   selectedAmount: string;
@@ -58,14 +60,34 @@ export class StakeComponent implements OnInit {
     return encodedName.toString()
   }
 
+  async login(){
+    console.log("check")
+    await this.scatterService.load()
+    if(this.scatterService.isLoggedIn()){
+      console.log("1=------")
+      this.scatterService.logout()
+      this.logingText = "Login"
+      this.router.navigateByUrl('home');
+    }
+  }
+
 
   stakeTabClicked() {
+    this.unstakeActive = false;
     this.stakeActive = true;
-    console.log('dosomething');
+    this.claimActive = false
+    // console.log('dosomething');
+  }
+  claimTabClicked(){
+    this.unstakeActive = false;
+    this.stakeActive = false;
+    this.claimActive = true;
   }
   unstakeTabClicked(){
+    this.unstakeActive = true;
+    this.claimActive = false;
     this.stakeActive=false
-    console.log("unstake called");
+    // console.log("unstake called");
   }
   async stake(){
     console.log("selected period",this.selectedPeriod)
@@ -101,26 +123,28 @@ export class StakeComponent implements OnInit {
     }
 
   }
-  async login(){
-    console.log("check")
-    await this.scatterService.load()
-    if(this.scatterService.isLoggedIn()){
-      console.log("1=------")
-      this.scatterService.logout()
-      this.logingText = "Login"
-      this.router.navigateByUrl('home');
-    }
-  }
+
   async withdraw(){
+    console.log("this is being called")
     if(this.scatterService.isLoggedIn()){
       console.log("1");
-        await this.scatterService.unstake()
+        this.scatterService.unstake().then((res:any)=>{
+          this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
+          this.getUserInfo('tryednatoken','stakes',this.encode(this.scatterService.accountName()),0);
+        })
+
+    } else{
+
+    }
+  }
+
+  async claim(){
+    if(this.scatterService.isLoggedIn()){
+      console.log("1");
+        await this.scatterService.claim()
         this.getBalance("tryednatoken","EDNA",this.scatterService.accountName())
           this.getUserInfo('tryednatoken','stakes',this.encode(this.scatterService.accountName()),0);
     } else{
-      console.log("2")
-      //await this.scatterService.login()
-      await this.scatterService.unstake()
 
     }
   }
