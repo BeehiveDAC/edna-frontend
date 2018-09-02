@@ -120,7 +120,6 @@ export class ScatterService {
       }catch(err){
         alert(err.error.what)
       }
-
     });
   }
 }
